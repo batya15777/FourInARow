@@ -1,0 +1,172 @@
+body, #root {
+    margin: 0;
+    background: #0c18fb;
+}
+
+.game-wrapper {
+    min-height: 100vh;
+    background: #0c18fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.board-container {
+    background: #0c18fb;
+    padding: 24px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.board-container h1 {
+    margin: 0;
+    color: #ffeb99;
+    font-size: 28px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* ========================= */
+/* ====== YOUR BOARD ======= */
+/* ========================= */
+
+.board-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 64px);
+    grid-auto-rows: 64px;
+    gap: 8px;
+
+    padding: 14px 18px;
+    background: #001c73;
+    border-radius: 18px;
+    border: 3px solid #ffcc66;
+    box-shadow:
+            0 4px 12px rgba(0, 0, 0, 0.4),
+            inset 0 0 10px rgba(0, 0, 0, 0.6);
+    align-self: flex-end;
+}
+
+.board-cell {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+
+    /* ✅ זה השינוי שמחזיר את הצביעה */
+    background-color: var(--cell-color, #e5e7ff);
+
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
+}
+
+.board-cell:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.55);
+}
+
+.disc-empty { background-color: #e5e7ff; }
+.disc-player1 { background-color: #ff4b4b; }
+.disc-player2 { background-color: #ffd93b; }
+
+/* ========================================================= */
+/* ===== LAYOUT: STATS LEFT / BOARD RIGHT + LOWER DOWN ====== */
+/* ========================================================= */
+
+.board-row {
+    display: flex;
+    flex-direction: row;     /* ✅ טבלה משמאל, לוח מימין (כשהטבלה לפני הלוח ב-JSX) */
+    gap: 64px;               /* ✅ לא צמודים */
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+
+    margin-top: 18px;        /* ✅ מוריד את שניהם קצת למטה */
+}
+
+/* במובייל - אחד מתחת לשני */
+@media (max-width: 900px){
+    .board-row{
+        flex-direction: column;
+        align-items: center;
+        gap: 22px;
+        margin-top: 10px;
+    }
+}
+
+/* ========================= */
+/* ===== STATS (BIGGER) ===== */
+/* ========================= */
+
+.stats-card {
+    width: 460px;
+    background: #001c73;
+    border-radius: 18px;
+    border: 3px solid #ffcc66;
+    padding: 24px 24px 18px;
+    box-shadow:
+            0 4px 12px rgba(0,0,0,0.4),
+            inset 0 0 10px rgba(0,0,0,0.45);
+    color: #ffeb99;
+
+    margin-top: 90px;  /* תגדילי/תקטיני לפי הצורך */
+}
+
+.stats-card h2{
+    margin: 0 0 16px;
+    font-size: 24px;
+    color: #ffeb99;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.35);
+}
+
+.stats-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+.stats-table th,
+.stats-table td{
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(255, 235, 153, 0.22);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.stats-table th{
+    font-weight: 800;
+    color: #fff2b8;
+}
+
+.colorDot{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-shadow:
+            inset 0 2px 5px rgba(255,255,255,0.25),
+            0 2px 6px rgba(0,0,0,0.35);
+}
+
+.is-turn{
+    background: rgba(255, 217, 59, 0.14);
+}
+
+.turnBadge{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #ffd93b;
+    color: #001c73;
+    font-weight: 900;
+    font-size: 13px;
+    margin-left: 10px;
+}
