@@ -5,15 +5,11 @@ import {useState} from "react";
 const COLORS =[  "red","blue","yellow","green","orange","lightblue","pink","purple"]
 
 
-function GameSettings(){
+function GameSettings({players,setPlayers,row,setRow,col,setCol,setStartGame}){
 
-
-    const [players,setPlayers] = useState([{id:1,name:'',color:null}
-                                                                             ,{id:2,name:'',color:null}])
 
     const [error,setError] = useState(null)
-    const [row ,setRow] = useState(null)
-    const [col,setCol] = useState(null)
+
 
 
     const nameChack = () => {
@@ -78,13 +74,15 @@ function GameSettings(){
       }
       else {
           setError(null)
+          setStartGame(true)
+
           return true
       }
 
     }
     const rowChack = () => {
 
-        if (row >=4 && row <=10){
+        if (row >=4 && row <=8){
 
             return true
 
@@ -99,7 +97,7 @@ function GameSettings(){
     }
     const colChack = () => {
 
-        if (col >=4 && col <=10){
+        if (col >=4 && col <=8){
 
             return true
 
@@ -179,9 +177,10 @@ function GameSettings(){
                     <div className="board-input-box">
                         <label>Rows</label>
                         <input
+                            value={row}
                             type="number"
                             min={4}
-                            max={10}
+                            max={8}
                             onChange={(e) => setRow(Number(e.target.value))}
                         />
                     </div>
@@ -189,9 +188,10 @@ function GameSettings(){
                     <div className="board-input-box">
                         <label>Columns</label>
                         <input
+                            value={col}
                             type="number"
                             min={4}
-                            max={10}
+                            max={8}
                             onChange={(e) => setCol(Number(e.target.value))}
                         />
                     </div>
