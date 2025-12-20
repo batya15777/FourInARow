@@ -1,5 +1,6 @@
 import "./Game.css";
 import {useState} from "react";
+import counterEx from "../TirgulDaniel/CounterEx";
 
 
 function Game ({players,setPlayers,row,col}){
@@ -7,7 +8,6 @@ function Game ({players,setPlayers,row,col}){
 
 
 
- // לא לשכוח בכל הלולאות שרצות לי בתוכנית איפה שיש 6 להחליף ל row ואיפה שיש לי 7 להחליף ל coll
  const creatBord = ()=> {
       const newBord = [];
       for (let i = 0; i < row;i++){
@@ -35,12 +35,12 @@ function Game ({players,setPlayers,row,col}){
     const gameMove = (rowIndex,colIndex)=>{
         if (winner!==null) return
 
-        const isDraw = drawPlayer(rowIndex,colIndex)
-        // פה בהמשך יבוא הפונקצה הכללית שמזמנת את כל הפונקציות של הבדיקות
-        if (checkWinner(rowIndex,colIndex)){
+        const index = drawPlayer(rowIndex,colIndex)
+        if (index === null) return;
+        if (checkWinner(index,colIndex)){
            setWinner(currenPlayer.name)
         }
-         else if (isDraw) {
+         else {
            setCurrentPlayer(currenPlayer === players[0]?  players[1]: players[0])
 
          }
@@ -54,24 +54,25 @@ function Game ({players,setPlayers,row,col}){
 
 
      const drawPlayer =(rowIndex,colIndex)=>{
+     let index = null
      const newBoard = [...board];
-     if (newBoard[rowIndex][colIndex].value !== null)  return false;
+     if (newBoard[rowIndex][colIndex].value !== null)  return null;
+
 
        for (let i = row -1; i >= 0;i--){
          if (newBoard[i][colIndex].value === null){
              newBoard[i][colIndex].value = currenPlayer.color
-
-             // אני אני אזמן פונקציה שמוסיפה 1 לשחקן ששיחק
-
+             index = i
              addToOnePlayer(rowIndex,colIndex)
-
              break
 
          }
 
      }
        setBoard(newBoard)
-         return true
+         console.log("index (landed row) =", index);
+
+         return index
 
 
    }
@@ -93,17 +94,17 @@ function Game ({players,setPlayers,row,col}){
              addToOunWin()
              return true
         }
-        // else if (checkRightDiagonal()){
-        //     addToOunWin()
-        //     return true
-        //
-        // }
-        // else if (checkLeftDiagonal()){
-        //     addToOunWin()
-        //     return true
-        //
-        //
-        // }
+        else if (checkRightDiagonal()){
+            addToOunWin()
+            return true
+
+        }
+        else if (checkLeftDiagonal()){
+            addToOunWin()
+            return true
+
+
+        }
 
             return false
 
@@ -114,6 +115,7 @@ function Game ({players,setPlayers,row,col}){
      let count = 0;
      for (let i = 0; i < row; i++) {
          if (board[i][colIndex].value !== null ) {
+
              if (board[i][colIndex].value === currenPlayer.color){
                  count++;
 
@@ -125,6 +127,8 @@ function Game ({players,setPlayers,row,col}){
          }
 
          if ( count === 4){
+             console.log("winCol")
+
              return true
              break;
          }
@@ -137,11 +141,10 @@ function Game ({players,setPlayers,row,col}){
 
     const rowVictoryCheck = (rowIndex) => {
         let count = 0;
-        console.log("count "+count)
 
         for (let j = 0; j < col; j++) {
+
             if (board[rowIndex][j].value !== null) {
-                console.log("count "+count)
                 if (board[rowIndex][j].value === currenPlayer.color){
 
                     count++;
@@ -152,6 +155,9 @@ function Game ({players,setPlayers,row,col}){
                 }
             }
             if ( count === 4){
+
+                console.log("winRow")
+
                 return true
                 break
 
@@ -160,10 +166,13 @@ function Game ({players,setPlayers,row,col}){
         }
    }
     const checkRightDiagonal = () =>{
+
+
         let count = 0;
-        for (let i = 0; i < row;i++){
+        for (let i = 0; i < row -1;i++){
+
             for (let j = 0; j < col;j++) {
-                if (board[i][j].value === currenPlayer.color){
+                if (board[i][j].value === currenPlayer.color && board[i+1][j+1].value === currenPlayer.color) {
                     count++;
 
 
@@ -230,7 +239,6 @@ function Game ({players,setPlayers,row,col}){
 
 
 
-    // לבדוק עם אביה אם צריך לשתמש פה בuseEffect
     const addToOnePlayer =(rowIndex,colIndex)=>{
 
 
@@ -250,7 +258,6 @@ function Game ({players,setPlayers,row,col}){
 
         }
     }
-    // כנ״ל
     const addToOunWin =()=>{
         for (let i = 0 ; i < players.length;i++){
             if (players[i].id === currenPlayer.id){
@@ -318,7 +325,7 @@ function Game ({players,setPlayers,row,col}){
                         ))
                     )}
                 </div>
-                <button className="reset-button">RESET</button>
+                <button className="reset-button" onClick={resetBoard}>RESET</button>
 
             </div>
             {
