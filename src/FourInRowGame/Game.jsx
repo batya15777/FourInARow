@@ -33,7 +33,7 @@ function Game ({players,setPlayers,row,col}){
 
 
     const gameMove = (rowIndex,colIndex)=>{
-        if (winner!==null) return
+        if (winner!==null) return;
 
         const index = drawPlayer(rowIndex,colIndex)
         if (index === null) return;
@@ -45,20 +45,13 @@ function Game ({players,setPlayers,row,col}){
 
          }
 
-
-
-
    }
-
-
 
 
      const drawPlayer =(rowIndex,colIndex)=>{
      let index = null
-     const newBoard = [...board];
+     const newBoard = [...board]
      if (newBoard[rowIndex][colIndex].value !== null)  return null;
-
-
        for (let i = row -1; i >= 0;i--){
          if (newBoard[i][colIndex].value === null){
              newBoard[i][colIndex].value = currenPlayer.color
@@ -70,18 +63,10 @@ function Game ({players,setPlayers,row,col}){
 
      }
        setBoard(newBoard)
-         console.log("index (landed row) =", index);
 
          return index
 
-
    }
-
-
-
-
-
-
 
     const checkWinner = (rowIndex,colIndex)=>{
 
@@ -94,7 +79,7 @@ function Game ({players,setPlayers,row,col}){
              addToOunWin()
              return true
         }
-        else if (checkRightDiagonal()){
+        else if (checkRightDiagonal(rowIndex,colIndex)){
             addToOunWin()
             return true
 
@@ -115,7 +100,6 @@ function Game ({players,setPlayers,row,col}){
      let count = 0;
      for (let i = 0; i < row; i++) {
          if (board[i][colIndex].value !== null ) {
-
              if (board[i][colIndex].value === currenPlayer.color){
                  count++;
 
@@ -126,8 +110,7 @@ function Game ({players,setPlayers,row,col}){
 
          }
 
-         if ( count === 4){
-             console.log("winCol")
+             if ( count === 4){
 
              return true
              break;
@@ -143,8 +126,8 @@ function Game ({players,setPlayers,row,col}){
         let count = 0;
 
         for (let j = 0; j < col; j++) {
+            console.log("row "+count)
 
-            if (board[rowIndex][j].value !== null) {
                 if (board[rowIndex][j].value === currenPlayer.color){
 
                     count++;
@@ -153,10 +136,9 @@ function Game ({players,setPlayers,row,col}){
                 else {
                     count =  0
                 }
-            }
-            if ( count === 4){
 
-                console.log("winRow")
+               if ( count === 4){
+
 
                 return true
                 break
@@ -167,53 +149,149 @@ function Game ({players,setPlayers,row,col}){
    }
     const checkRightDiagonal = () =>{
 
-
-        let count = 0;
-        for (let i = 0; i < row -1;i++){
-
-            for (let j = 0; j < col;j++) {
-                if (board[i][j].value === currenPlayer.color && board[i+1][j+1].value === currenPlayer.color) {
-                    count++;
-
-
-                }
-                else {
-                    count = 0
-                }
-            }
-            if (count === 4){
-                return true
-                break
-
-            }
-
+        if (rightFromTop()){
+            return true
+        }
+        else if (rightFromLeft()){
+            return true
 
         }
-
+            return false
 
 
     }
-    const checkLeftDiagonal = () =>{
-        let count = 0;
-        for (let i = 0; i < row;i++){
-            for (let j = col; j <= 0;j--) {
-                if (board[i][j].value === currenPlayer.color){
-                    count++;
+    const rightFromTop = ()=>{
+
+
+     for (let startCol = 0; startCol < col; startCol++){
+         let r = 0;
+         let c = startCol  ;
+         let count = 0;
+          while (r < row && c < col){
+
+              if(board[r][c].value === currenPlayer.color){
+                 count++
+                  console.log("r"+count)
+
+
+              }
+              else {
+                  count = 0;
+              }
+              if (count === 4){
+                  return true
+
+              }
+              r++
+              c++
+
+          }
+     }
+
+        return false;
+
+    }
+    const rightFromLeft= ()=>{
+
+
+        for (let startRow = 0; startRow < row; startRow++){
+            let r = startRow;
+            let c = 0  ;
+            let count = 0;
+            while (r < row && c < col){
+
+                if(board[r][c].value === currenPlayer.color){
+                    count++
+                    console.log("r"+count)
+
+
                 }
                 else {
-                    count = 0
+                    count = 0;
                 }
+                if (count === 4){
+                    return true
+
+                }
+                r++
+                c++
 
             }
-            if (count === 4){
-                return true
-                break
-            }
-
-
         }
 
+        return false;
 
+    }
+    const checkLeftDiagonal = () =>{
+       if (leftFromTop()){
+           return true;
+       }
+       else if (leftFromRight()){
+           return true
+       }
+
+
+           return false
+    }
+
+    const leftFromTop = ()=>{
+
+
+        for (let startCol = 0; startCol < col; startCol++){
+            let r = 0;
+            let c = startCol  ;
+            let count = 0;
+            while (r < row && c > 0){
+
+                if(board[r][c].value === currenPlayer.color){
+                    count++
+
+
+                }
+                else {
+                    count = 0;
+                }
+                if (count === 4){
+                    return true
+
+                }
+                r++
+                c--
+
+            }
+        }
+
+        return false;
+
+    }
+    const leftFromRight = ()=>{
+
+
+        for (let startRow = 0; startRow < col; startRow++){
+            let r = startRow;
+            let c = 0  ;
+            let count = 0;
+            while (r < row && c > 0){
+
+                if(board[r][c].value === currenPlayer.color){
+                    count++
+
+
+                }
+                else {
+                    count = 0;
+                }
+                if (count === 4){
+                    return true
+
+                }
+                r++
+                c--
+
+            }
+        }
+
+        return false;
 
     }
     const resetBoard = () =>{
@@ -224,15 +302,6 @@ function Game ({players,setPlayers,row,col}){
         for (let  i =0; i<players.length;i++){
             players[i].playCount = ""
         }
-
-
-
-
-    }
-    const undo = () =>{
-
-
-
 
     }
 
