@@ -140,8 +140,10 @@ function Game ({players,setPlayers,row,col}){
                if ( count === 4){
 
 
+
+
                 return true
-                break
+
 
             }
 
@@ -241,7 +243,7 @@ function Game ({players,setPlayers,row,col}){
             let r = 0;
             let c = startCol  ;
             let count = 0;
-            while (r < row && c > 0){
+            while (r < row && c >= 0){
 
                 if(board[r][c].value === currenPlayer.color){
                     count++
@@ -267,11 +269,11 @@ function Game ({players,setPlayers,row,col}){
     const leftFromRight = ()=>{
 
 
-        for (let startRow = 0; startRow < col; startRow++){
+        for (let startRow = col -1; startRow < row; startRow++){
             let r = startRow;
             let c = 0  ;
             let count = 0;
-            while (r < row && c > 0){
+            while (r < row && c >= 0){
 
                 if(board[r][c].value === currenPlayer.color){
                     count++
